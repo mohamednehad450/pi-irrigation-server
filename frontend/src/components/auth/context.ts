@@ -74,8 +74,18 @@ export const useProvideAuth = (): AuthContext => {
 
 
 
-    const signin: SignIn = async (username, password) => {
-        getToken(username, password).then(updateUser)
+    const signin: SignIn = (username, password) => {
+        return getToken(username, password)
+            .then(updateUser)
+            .catch(error => {
+                const { response, isAxiosError } = error
+                if (isAxiosError) {
+                    const { data, status } = response
+                    if (status === 400) {
+                        throw data
+                    }
+                }
+            })
     };
     const signout: SignOut = () => {
         updateUser(undefined)
