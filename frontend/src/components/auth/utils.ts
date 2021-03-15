@@ -32,7 +32,7 @@ export const getToken: GetToken = async (username, password) => {
 
 export const refreshToken: RefreshToken = async (oldToken: string) => {
     const { data: { token } }
-        = await Axios.post<{ token: string }>('/api/auth/refresh_token', {
+        = await Axios.post<{ token: string }>('/auth/refresh_token', {
             token: oldToken,
         }, {
             headers: {
