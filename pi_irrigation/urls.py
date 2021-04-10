@@ -15,13 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
-urlpatterns = [
+from api.views import PiConfigViewSet
 
+router = routers.DefaultRouter()
+
+router.register(r'configs', PiConfigViewSet, basename='config')
+
+
+urlpatterns = [
+    path('api/', include(router.urls)),
     path('auth/refresh_token', refresh_jwt_token),
     path('auth/get_token', obtain_jwt_token),
-
     path('admin/', admin.site.urls),
 
     # Must be at the bottom, contains catch-all path
