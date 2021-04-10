@@ -3,6 +3,7 @@ import {
 } from "react-router-dom";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import ProvideAuth from "./components/auth/ProvideAuth";
+import { ProvideConfigs } from "./components/piConfig";
 import { Signin } from "./components/screens/Signin";
 import { routes } from "./routes";
 
@@ -12,7 +13,9 @@ function App() {
       <Router>
         <Switch>
           <PrivateRoute path={routes.APP}>
-            MAIN APP
+            <ProvideConfigs>
+              MAIN APP
+            </ProvideConfigs>
           </PrivateRoute>
           <Route path={routes.SIGININ}>
             <main className="light">
