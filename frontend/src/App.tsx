@@ -40,6 +40,12 @@ function App() {
                     <Route path={routes.DEVICE}>
                       <Device />
                     </Route>
+                    <Route path={routes.APP} exact>
+                      <Redirect to={routes.CONFIGS}></Redirect>
+                    </Route>
+                    <Route path="*">
+                      404 Not Found
+                    </Route>
                   </Switch>
                 </main>
               </div>
