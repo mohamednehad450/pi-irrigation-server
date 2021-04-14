@@ -1,21 +1,33 @@
 import {
     getPiConfigs,
     addNewPiConfig,
-    removePiConfig
+    removePiConfig,
+    validPinsArr
 } from './piConfig'
 
 
 import type {
     PiConfig,
+    ConfigJson,
+    Zone,
+    Section,
+    Pump,
+    ValidPin,
 } from './piConfig'
 
 
 export {
     getPiConfigs,
     addNewPiConfig,
-    removePiConfig
+    removePiConfig,
+    validPinsArr,
 }
 
 export type {
-    PiConfig
+    PiConfig,
+    ConfigJson,
+    Zone,
+    Section,
+    Pump,
+    ValidPin,
 }

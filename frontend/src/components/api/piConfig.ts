@@ -7,6 +7,37 @@ export interface PiConfig {
     config_json: string
 }
 
+export type ValidPin = (3 | 5 | 7 | 26 | 10 | 12 | 11 | 13 | 15 | 16 | 18 | 19 | 21 | 22 | 24 | 23);
+export const validPinsArr: ValidPin[] = [3, 5, 7, 26, 10, 12, 11, 13, 15, 16, 18, 19, 21, 22, 24, 23]
+
+
+export type Section = {
+    name: string,
+    pin: ValidPin,
+    duration: string,
+}
+
+export type Pump = {
+    name: string,
+    pin: ValidPin,
+    initTime: string,
+}
+
+export type Zone = {
+    title: string,
+    section: Section[]
+    pump?: Pump
+}
+
+export interface ConfigJson {
+    configId: string
+    name: string,
+    gpioPins: ValidPin[]
+    timeout: string
+    zones: Zone[]
+}
+
+
 export interface PiConfigError {
     id?: string[]
     config_json?: string[]
