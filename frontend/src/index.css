@@ -70,6 +70,106 @@ main {
   justify-content: center;
 }
 
+.container {
+  min-width: 500px;
+  width: 80rem;
+  background-color: var(--fg);
+}
+
+.header {
+  width: 100%;
+  height: 10rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--fg);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.header-titles {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem;
+}
+
+.header-title {
+  font-size: 3rem;
+  color: var(--titles);
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.header-subtitle {
+  font-size: 1rem;
+  color: var(--subtitle);
+}
+
+.header-actions {
+  margin: 2rem;
+}
+
+.header-actions-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-actions-icon svg {
+  height: 3rem !important;
+  width: 3rem !important;
+  fill: var(--icons);
+}
+
+.navbar {
+  z-index: 1;
+  position: fixed;
+  color: var(--text-nav);
+}
+
+.navbar-nav {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.nav-item {
+  height: 3rem;
+  width: 3rem;
+  margin: 1rem 0;
+  border-radius: 50%;
+  background-color: var(--shadow-nav1);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  transition: all 200ms ease;
+}
+
+.nav-item:hover {
+  background-color: var(--shadow-nav2);
+}
+
+.nav-link {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-link svg {
+  fill: var(--text-nav);
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  filter: opacity(0.7);
+  transition: all 200ms ease;
+}
+
+.nav-link:hover svg {
+  filter: opacity(1);
+}
+
 .container-sm {
   background-color: var(--fg);
   margin: auto;
@@ -183,6 +283,22 @@ main {
 }
 
 @media only screen and (max-width: 799px) {
+  .navbar {
+    background: var(--bg-nav);
+    bottom: 0;
+    width: 100vw;
+    height: 5rem;
+  }
+  .navbar-nav {
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+  }
+  .container {
+    width: 100%;
+    min-width: 0;
+    padding-bottom: 5rem;
+  }
   .container-sm {
     transform: none;
     margin: auto 1rem;
@@ -192,5 +308,24 @@ main {
 @media only screen and (min-width: 800px) {
   main {
     padding-left: 5rem;
+  }
+  .navbar {
+    background: var(--bg-nav);
+    top: 0;
+    width: 5rem;
+    height: 100vh;
+  }
+  .navbar-nav {
+    flex-direction: column;
+    height: 100%;
+  }
+  .nav-item:first-child {
+    margin-top: 1.5rem;
+  }
+  .nav-item:last-child {
+    margin-bottom: 1.5rem;
+  }
+  .overlay {
+    left: 5rem;
   }
 }
