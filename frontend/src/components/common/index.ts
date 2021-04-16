@@ -5,6 +5,7 @@ import Header from './Header'
 import NumberInput from './NumberInput'
 import SettingRow from './SettingRow'
 import DurationInput from './DurationInput'
+import ListRow from './ListRow'
 
 
 
@@ -15,5 +16,6 @@ export {
     Header,
     NumberInput,
     SettingRow,
-    DurationInput
+    DurationInput,
+    ListRow,
 }
