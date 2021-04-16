@@ -1,16 +1,55 @@
 import { FC } from "react"
-import { Header } from "../../common"
+import { Button, Header, ListRow } from "../../common"
+import { useConfig } from "../../piConfig"
 
+
+import { ReactComponent as DeleteIcon } from '../../../assets/icons/delete.svg'
+import { ReactComponent as EditIcon } from '../../../assets/icons/edit.svg'
+import { Link } from "react-router-dom"
+import { routes } from "../../../routes"
 
 
 const Configs: FC = () => {
 
-
+    const { configs, deleteConfig } = useConfig()
     return (
         <div className="container">
             <Header
                 title={'Configs'}
             />
+            <div className="list-container">
+                {configs.map(c => (
+                    <ListRow
+                        leftItem={(
+                            <>
+                                <span className="text-title">
+                                    {c.config_json.name}
+                                </span>
+                            </>
+                        )}
+                        rightItem={(
+                            <>
+                                <Link
+                                    className="btn-icon padding"
+                                    to={`${routes.NEW_CONFIG}?edit=${c.id}`}
+                                >
+                                    <span className="icon">
+                                        <EditIcon />
+                                    </span>
+                                </Link>
+                                <Button
+                                    className="btn-icon padding"
+                                    onClick={() => window.confirm('Delete Zone?') && deleteConfig(c.id)}
+                                >
+                                    <span className="icon">
+                                        <DeleteIcon />
+                                    </span>
+                                </Button>
+                            </>
+                        )}
+                    />
+                ))}
+            </div>
         </div>
     )
 }

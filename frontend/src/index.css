@@ -359,6 +359,62 @@ main {
   float: right;
 }
 
+.list-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.row-container {
+  transition: all var(--speed) ease-in-out;
+  overflow: hidden;
+}
+
+.row-container>hr {
+  border: 0;
+  margin-left: 2rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.row-container:last-child hr {
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 5rem;
+  padding: 0 1rem;
+}
+
+.row-section {
+  display: flex;
+  align-items: center;
+}
+
+.expandable-container {
+  max-height: 40rem;
+  margin: 0;
+  transition: all var(--speed) ease-in-out;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.expandable-container::-webkit-scrollbar {
+  display: none;
+}
+
+.text-title {
+  font-size: 1.5rem;
+  margin-left: 1rem;
+  max-width: 40vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text);
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+}
+
 @media only screen and (max-width: 799px) {
   .navbar {
     background: var(--bg-nav);
