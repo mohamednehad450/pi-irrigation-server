@@ -1,3 +1,6 @@
+import { useLocation } from "react-router-dom";
+
+
 export const getItemFromStorage = (key: string): any | undefined => {
 
     const item = localStorage.getItem(key)
@@ -56,4 +59,9 @@ export function updateItemInArray<T extends Id>(arr: T[], id: T['id'], updater: 
         return [...arr]
     }
     throw Error('Item doesn\'t exist in in the Array.')
+}
+
+
+export const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
 }
