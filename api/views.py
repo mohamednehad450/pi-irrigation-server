@@ -63,8 +63,20 @@ class PiConfigViewSet(viewsets.ViewSet):
         except ValidationError:
             return Response({"id": [f"'{pk}' is not a valid UUID ID"]}, status=400)
 
-   # def update(self, request, pk=None):
-    #     pass
+    def update(self, request, pk=None):
+        try:
+            config = get_object_or_404(PiConfig, user=request.user, pk=pk)
+
+            ser = PiConfigSerializer(
+                config, data={**request.data, "user": request.user.id})
+
+            if ser.is_valid():
+                config = ser.save()
+                return Response(PiConfigSerializer(config).data)
+            else:
+                return Response(ser._errors, status=400)
+        except ValidationError:
+            return Response({"id": [f"'{pk}' is not a valid UUID ID"]}, status=400)
 
     # def partial_update(self, request, pk=None):
     #     pass
