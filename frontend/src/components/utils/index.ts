@@ -1,3 +1,4 @@
+import { Duration } from "moment";
 import { useLocation } from "react-router-dom";
 
 
@@ -64,4 +65,10 @@ export function updateItemInArray<T extends Id>(arr: T[], id: T['id'], updater: 
 
 export const useQuery = () => {
     return new URLSearchParams(useLocation().search);
+}
+
+export const formatDuration = (d: Duration): string => {
+    const min = Math.floor(d.as('seconds') / 60)
+    const sec = Math.floor(d.as('seconds') % 60)
+    return `${min <= 9 ? '0' + min : min}:${sec <= 9 ? '0' + sec : sec}`
 }

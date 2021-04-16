@@ -290,6 +290,10 @@ main {
   padding: 1rem;
 }
 
+.padding-h {
+  padding: 0 1rem;
+}
+
 .padding-top {
   padding-top: 1rem;
 }
@@ -394,11 +398,11 @@ main {
 }
 
 .expandable-container {
-  max-height: 40rem;
+  max-height: 80vh;
   margin: 0;
   transition: all var(--speed) ease-in-out;
   overflow-y: scroll;
-  scrollbar-width: none;
+  background-color: var(--gray-dim);
 }
 
 .expandable-container::-webkit-scrollbar {
@@ -413,6 +417,19 @@ main {
   text-overflow: ellipsis;
   color: var(--text);
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+}
+
+.border {
+  border: 1px solid var(--hr);
+}
+
+.text {
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.margin-v {
+  margin: 1rem 0;
 }
 
 @media only screen and (max-width: 799px) {
