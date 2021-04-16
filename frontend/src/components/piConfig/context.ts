@@ -4,12 +4,12 @@ import { removeFromArray } from "../utils";
 import { getPiConfigs, addNewPiConfig, removePiConfig } from '../api'
 
 import type { AuthContext } from '../auth';
-import { PiConfig } from "../api";
+import { PiConfig, ParsedPiConfig } from "../api";
 
 
 
 export interface PiConfigContext {
-    configs: PiConfig[]
+    configs: ParsedPiConfig[]
     addConfig: (c: Partial<PiConfig>) => Promise<void>
     deleteConfig: (id: PiConfig['id']) => Promise<void>
 }
@@ -62,10 +62,10 @@ const handleErr = (err: any): any => {
 
 export const useProvideConfig = ({ user, signout }: AuthContext): PiConfigContext => {
 
-    const [configs, setConfigs] = useState<PiConfig[]>([]);
+    const [configs, setConfigs] = useState<ParsedPiConfig[]>([]);
 
     const addConfig: PiConfigContext['addConfig'] = (c) => addNewPiConfig(c, user)
-        .then(c => setConfigs(cs => [c, ...cs]))
+        .then(c => setConfigs(cs => [{ id: c.id, config_json: JSON.parse(c.config_json) }, ...cs]))
         .catch(err => isAuthError(err) ? signout() : handleErr(err));
 
     const deleteConfig: PiConfigContext['deleteConfig'] = id => removePiConfig(id, user)
@@ -76,7 +76,7 @@ export const useProvideConfig = ({ user, signout }: AuthContext): PiConfigContex
     useEffect(() => {
         user &&
             getPiConfigs(user)
-                .then(setConfigs)
+                .then(cs => setConfigs(cs.map(c => ({ ...c, config_json: JSON.parse(c.config_json) }))))
                 .catch(err => isAuthError(err) ? signout() : handleErr(err));
     }, [user, signout])
 

@@ -1,4 +1,5 @@
 import { FC } from "react"
+import { duration } from "moment"
 import { Section, SectionError } from "../../api"
 import { Button, DurationInput, ErrorList, SettingRow, TextInput } from "../../common"
 import PinSelect from "./PinSelect"
@@ -31,7 +32,7 @@ const SectionInput: FC<SectionInputProps> = ({ section, onChange, remove, err })
                 />
             </SettingRow>
             <SettingRow title="Duration">
-                <DurationInput value={section.duration} onChange={duration => onChange({ ...section, duration })} />
+                <DurationInput value={duration(section.duration)} onChange={duration => onChange({ ...section, duration })} />
                 <ErrorList errors={err?.duration} />
             </SettingRow>
             <SettingRow title="Pin">

@@ -1,3 +1,4 @@
+import { duration } from "moment";
 import { FC, useState } from "react";
 import { ConfigJsonError } from "../../api";
 import { Button, DurationInput, ErrorList, Header, SettingRow, TextInput } from "../../common";
@@ -33,7 +34,7 @@ const AddConfig: FC = () => {
                 <SettingRow
                     title="Timeout"
                 >
-                    <DurationInput value={config.timeout} onChange={timeout => setConfig(c => ({ ...c, timeout }))} />
+                    <DurationInput value={duration(config.timeout)} onChange={timeout => setConfig(c => ({ ...c, timeout }))} />
                     <ErrorList errors={err.timeout} />
                 </SettingRow>
                 {config.zones.map((z, i) => (
@@ -71,7 +72,7 @@ const AddConfig: FC = () => {
                     }}
                 >
                     clear
-                    </Button>
+                </Button>
                 <Button onClick={() => setErr(validateConfig(config).err)}>
                     Verify
                 </Button>

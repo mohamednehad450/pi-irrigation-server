@@ -1,3 +1,4 @@
+import { duration } from "moment";
 import { FC } from "react";
 import { Pump, PumpError } from "../../api";
 import { DurationInput, ErrorList, SettingRow, TextInput } from "../../common";
@@ -27,7 +28,7 @@ const PumpInput: FC<PumpInputProps> = ({ pump, onChange, err }) => {
             </SettingRow>
             <SettingRow title="Pump Timeout">
                 <DurationInput
-                    value={pump.initTime}
+                    value={duration(pump.initTime)}
                     onChange={initTime => onChange({ ...pump, initTime })}
                 />
                 <ErrorList errors={err?.initTime} />

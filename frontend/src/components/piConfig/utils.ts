@@ -42,7 +42,7 @@ export const validateConfig = (config: ConfigJson): { err: ConfigJsonError, isVa
     const err = {
         configId: validateUuid(config.configId) ? undefined : ['Invalid uuid'],
         name: config.name ? undefined : ['This field cannot be empty'],
-        timeout: validateNegDuration(config.timeout),
+        timeout: validateNegDuration(duration(config.timeout)),
         non_field_errors: config.zones.length > 0 ? undefined : ['Each config must contain at least 1 zone'],
         zones: zonesErr.map(z => z.err)
     }
@@ -77,7 +77,7 @@ export const validateSection = (s: Section, pins: ValidPin[], selectedPins: Vali
     selectedPins.filter(p => p === s.pin).length > 1 && pin.push('Pin already selected');
 
     const err = {
-        duration: validateMinDuration(s.duration),
+        duration: validateMinDuration(duration(s.duration)),
         pin,
         name: s.name ? undefined : ['This field cannot be empty']
     }
@@ -95,7 +95,7 @@ export const validatePump = (p: Pump, pins: ValidPin[], selectedPins: ValidPin[]
     const err = {
         name: p.name ? undefined : ['This field cannot be empty'],
         pin,
-        initTime: validateMinDuration(p.initTime),
+        initTime: validateMinDuration(duration(p.initTime)),
 
     }
     return {

@@ -17,6 +17,7 @@ import type {
     ZoneError,
     PumpError,
     ConfigJsonError,
+    ParsedPiConfig,
 } from './piConfig'
 
 
@@ -38,4 +39,5 @@ export type {
     ZoneError,
     PumpError,
     ConfigJsonError,
+    ParsedPiConfig,
 }
