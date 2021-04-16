@@ -204,7 +204,7 @@ main {
 }
 
 .btn {
-  width: 6rem;
+  width: 8rem;
   height: 2rem;
   font-size: 1rem;
   margin: 1rem;
@@ -280,6 +280,83 @@ main {
 .input-invalid {
   border-bottom: 2px solid var(--input-invalid-border) !important;
   transition: border 200ms ease;
+}
+
+.padding-2 {
+  padding: 2rem;
+}
+
+.padding {
+  padding: 1rem;
+}
+
+.padding-top {
+  padding-top: 1rem;
+}
+
+.indent {
+  padding-left: 1rem;
+}
+
+.num-input {
+  width: 3rem;
+}
+
+.num-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 0.5rem;
+}
+
+.num-input-subtitle {
+  color: var(--gray3);
+}
+
+.setting-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.setting-title {
+  color: var(--text);
+  font-size: 1.25rem;
+  align-self: flex-end;
+  padding: 0 1rem;
+}
+
+.setting-input {
+  display: flex;
+  flex-direction: row;
+  padding: 0 1rem;
+}
+
+.zone-input-container, .section-input-container {
+  margin: 1rem;
+  border: 1px solid var(--hr);
+}
+
+.btn-icon {
+  display: flex;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  width: 3rem !important;
+  height: 3rem !important;
+  background-color: transparent;
+  align-items: center;
+  justify-content: center;
+  color: var(--titles);
+}
+
+.icon svg {
+  fill: var(--icons)
+}
+
+.float-r {
+  float: right;
 }
 
 @media only screen and (max-width: 799px) {
