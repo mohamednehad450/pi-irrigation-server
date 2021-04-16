@@ -10,12 +10,31 @@ import type {
 
 import ProvideConfigs from './ProvideConfigs'
 
+import {
+    createEmptyConfig,
+    createEmptyPump,
+    createEmptySection,
+    createEmptyZone,
+    validateZone,
+    validatePump,
+    validateConfig,
+    validateSection,
+
+} from './utils'
 
 export {
     useConfig,
     useProvideConfig,
     configContext,
     ProvideConfigs,
+    createEmptyConfig,
+    createEmptyPump,
+    createEmptySection,
+    createEmptyZone,
+    validateZone,
+    validatePump,
+    validateConfig,
+    validateSection,
 }
 
 export type {

@@ -13,6 +13,10 @@ import type {
     Section,
     Pump,
     ValidPin,
+    SectionError,
+    ZoneError,
+    PumpError,
+    ConfigJsonError,
 } from './piConfig'
 
 
@@ -30,4 +34,8 @@ export type {
     Section,
     Pump,
     ValidPin,
+    SectionError,
+    ZoneError,
+    PumpError,
+    ConfigJsonError,
 }

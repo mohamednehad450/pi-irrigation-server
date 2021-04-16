@@ -1,4 +1,5 @@
 import Axios from "axios"
+import { Duration } from "moment";
 import { User } from "../auth"
 
 
@@ -14,27 +15,56 @@ export const validPinsArr: ValidPin[] = [3, 5, 7, 26, 10, 12, 11, 13, 15, 16, 18
 export type Section = {
     name: string,
     pin: ValidPin,
-    duration: string,
+    duration: Duration,
+}
+
+export type SectionError = {
+    name?: string[],
+    pin?: string[],
+    duration?: string[],
+    non_field_errors?: string[]
 }
 
 export type Pump = {
     name: string,
     pin: ValidPin,
-    initTime: string,
+    initTime: Duration,
+}
+
+export type PumpError = {
+    name?: string[],
+    pin?: string[],
+    initTime?: string[],
+    non_field_errors?: string[]
 }
 
 export type Zone = {
-    title: string,
-    section: Section[]
+    name: string,
+    sections: Section[]
     pump?: Pump
 }
 
+export type ZoneError = {
+    name?: string[],
+    sections?: SectionError[]
+    pump?: PumpError
+    non_field_errors?: string[]
+}
 export interface ConfigJson {
     configId: string
     name: string,
     gpioPins: ValidPin[]
-    timeout: string
+    timeout: Duration
     zones: Zone[]
+}
+
+export interface ConfigJsonError {
+    configId?: string[]
+    name?: string[]
+    gpioPins?: string[]
+    timeout?: string[]
+    zones?: ZoneError[]
+    non_field_errors?: string[]
 }
 
 
