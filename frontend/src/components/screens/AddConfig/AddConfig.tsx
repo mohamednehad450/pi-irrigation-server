@@ -1,18 +1,34 @@
 import { duration } from "moment";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { ConfigJsonError } from "../../api";
 import { Button, DurationInput, ErrorList, Header, SettingRow, TextInput } from "../../common";
 import { useConfig } from "../../piConfig";
 import { createEmptyConfig, createEmptyZone, validateConfig } from "../../piConfig";
+import { useQuery } from "../../utils";
 import ZoneInput from "./ZoneInput";
 
 
 const AddConfig: FC = () => {
 
+    const query = useQuery()
+    const [editing, setEditing] = useState(false)
     const [config, setConfig] = useState(createEmptyConfig())
     const [err, setErr] = useState<ConfigJsonError>({})
 
-    const { addConfig } = useConfig()
+    const { addConfig, configs, updateConfig } = useConfig()
+
+    useEffect(() => {
+        const id = query.get('edit')
+        if (id) {
+            const c = configs.find(c => c.id === id)
+            if (c) {
+                setConfig(c.config_json)
+                setEditing(true)
+            }
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <div className="container">
@@ -71,7 +87,7 @@ const AddConfig: FC = () => {
                         }
                     }}
                 >
-                    clear
+                    {editing ? "Cancel" : "Clear"}
                 </Button>
                 <Button onClick={() => setErr(validateConfig(config).err)}>
                     Verify
@@ -81,18 +97,28 @@ const AddConfig: FC = () => {
                     onClick={() => {
                         const err = validateConfig(config)
                         err.isValid ?
-                            addConfig({
-                                config_json: JSON.stringify(config),
-                                id: config.configId
-                            }).then(() => {
-                                setErr({})
-                                setConfig(createEmptyConfig())
-                                alert('Config Added Successfully')
-                            }) :
+                            editing ?
+                                updateConfig(config.configId, {
+                                    config_json: JSON.stringify(config),
+                                    id: config.configId
+                                }).then(() => {
+                                    setErr({})
+                                    setConfig(createEmptyConfig())
+                                    alert('Config Updated Successfully')
+                                }) :
+                                addConfig({
+                                    config_json: JSON.stringify(config),
+                                    id: config.configId
+                                }).then(() => {
+                                    setErr({})
+                                    setConfig(createEmptyConfig())
+                                    alert('Config Added Successfully')
+                                })
+                            :
                             setErr(err.err)
                     }}
                 >
-                    Submit
+                    {editing ? "Save" : 'Submit'}
                 </Button>
             </div>
         </div>

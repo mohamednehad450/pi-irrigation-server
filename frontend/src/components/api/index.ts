@@ -2,7 +2,8 @@ import {
     getPiConfigs,
     addNewPiConfig,
     removePiConfig,
-    validPinsArr
+    validPinsArr,
+    updatePiConfig,
 } from './piConfig'
 
 
@@ -26,6 +27,7 @@ export {
     addNewPiConfig,
     removePiConfig,
     validPinsArr,
+    updatePiConfig,
 }
 
 export type {

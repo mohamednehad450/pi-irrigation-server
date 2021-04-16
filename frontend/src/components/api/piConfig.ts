@@ -101,6 +101,17 @@ export const addNewPiConfig = async (config: Partial<PiConfig>, user?: User): Pr
     return data
 }
 
+export const updatePiConfig = async (id: PiConfig['id'], config: Partial<PiConfig>, user?: User): Promise<PiConfig> => {
+    const { data } =
+        await Axios.put<PiConfig>(`/api/configs/${id}/`, config, {
+            headers: {
+                "Authorization": `JWT ${user?.token}`
+            }
+        })
+    return data
+}
+
+
 export const removePiConfig = async (id: PiConfig['id'], user?: User): Promise<void> => {
     await Axios.delete<void>(`/api/configs/${id}/`, {
         headers: {
