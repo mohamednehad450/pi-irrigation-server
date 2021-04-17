@@ -177,6 +177,6 @@ JWT_AUTH = {
 }
 
 
-IRRIGATION_DIR = os.path.join(BASE_DIR, 'pi-irrigation-system-utility')
+IRRIGATION_DIR = os.path.join(BASE_DIR, 'irrigation-config')
 IRRIGATION_SCHEMA = os.path.join(IRRIGATION_DIR, 'schema.json')
 IRRIGATION_CONFIG = os.path.join(IRRIGATION_DIR, 'congif.json')
