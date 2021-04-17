@@ -1,0 +1,4 @@
+apscheduler
+jsonschema
+rest_framework
+rest_framework-jwt
