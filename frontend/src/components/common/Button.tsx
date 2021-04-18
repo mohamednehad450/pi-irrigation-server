@@ -1,9 +1,9 @@
-import { FC } from 'react'
+import { FC, MouseEventHandler } from 'react'
 
 interface ButtonProps {
     type?: 'primary' | 'secondary'
     className?: string
-    onClick?: () => void
+    onClick?: MouseEventHandler
     disabled?: boolean
 }
 
