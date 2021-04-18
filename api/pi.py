@@ -8,14 +8,32 @@ from apscheduler.triggers.date import DateTrigger, convert_to_datetime, datetime
 
 from datetime import timedelta
 
-from .utils import iso8601_duration_as_seconds as parse_duration, turn_on, turn_off_with_log, GPIO_Initialize
+from .utils import iso8601_duration_as_seconds as parse_duration, turn_on, turn_off_with_log, GPIO_Initialize, log_with_timestamp, exit_handler
+
+from .models import PiConfig
+from django.conf import settings
 
 sched = BackgroundScheduler()
 sched.start()
 
 
-def load_config(config, schema):
-    return validate_config(json.load(open(config, "r")), json.load(open(schema, "r")))
+def start_config(config_json):
+
+    schema = json.load(open(settings.IRRIGATION_SCHEMA, "r"))
+
+    validated_config = validate_config(json.loads(config_json), schema)
+
+    logfile = 'log.txt'
+    def logger(m): log_with_timestamp(m, logfile)
+
+    def run():
+        try:
+            run_config(validated_config, logger)
+            exit_handler()
+        except:
+            exit_handler()
+
+    sched.add_job(run)
 
 
 def validate_config(config, schema):

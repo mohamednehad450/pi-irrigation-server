@@ -6,9 +6,11 @@ from django.core.exceptions import ValidationError
 
 from rest_framework import permissions, viewsets
 from rest_framework.response import Response
+from rest_framework.decorators import action
 
 from .models import PiConfig
 from .serializers import PiConfigSerializer
+from .pi import start_config
 
 
 def frontend(request):
@@ -78,5 +80,11 @@ class PiConfigViewSet(viewsets.ViewSet):
         except ValidationError:
             return Response({"id": [f"'{pk}' is not a valid UUID ID"]}, status=400)
 
-    # def partial_update(self, request, pk=None):
-    #     pass
+    @action(methods=['post'], detail=True)
+    def run_config(self, request, pk=None):
+        try:
+            config = get_object_or_404(PiConfig, user=request.user, pk=pk)
+            start_config(config.config_json)
+            return Response(status=200)
+        except ValidationError:
+            return Response({"id": [f"'{pk}' is not a valid UUID ID"]}, status=400)
