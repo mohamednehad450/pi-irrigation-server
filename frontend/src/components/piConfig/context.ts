@@ -1,7 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { removeFromArray, replaceFromArray } from "../utils";
 
-import { getPiConfigs, addNewPiConfig, removePiConfig, updatePiConfig } from '../api'
+import {
+    getPiConfigs,
+    addNewPiConfig,
+    removePiConfig,
+    updatePiConfig,
+    runConfig as runConfigAPI
+} from '../api'
 
 import type { AuthContext } from '../auth';
 import { PiConfig, ParsedPiConfig } from "../api";
@@ -13,6 +19,7 @@ export interface PiConfigContext {
     addConfig: (c: Partial<PiConfig>) => Promise<void>
     updateConfig: (id: PiConfig['id'], c: Partial<PiConfig>) => Promise<void>
     deleteConfig: (id: PiConfig['id']) => Promise<void>
+    runConfig: (id: PiConfig['id']) => Promise<void>
 }
 
 const defaultConfigContext: PiConfigContext = {
@@ -20,6 +27,7 @@ const defaultConfigContext: PiConfigContext = {
     addConfig: async () => console.error('auth not initialized'),
     updateConfig: async () => console.error('auth not initialized'),
     deleteConfig: async () => console.error('auth not initialized'),
+    runConfig: async () => console.error('auth not initialized'),
 };
 
 
@@ -74,6 +82,9 @@ export const useProvideConfig = ({ user, signout }: AuthContext): PiConfigContex
         .then(() => setConfigs(removeFromArray(configs, id)))
         .catch(err => isAuthError(err) ? signout() : handleErr(err));
 
+    const runConfig: PiConfigContext['runConfig'] = id => runConfigAPI(id, user)
+        .catch(err => isAuthError(err) ? signout() : handleErr(err));
+
     const updateConfig: PiConfigContext['updateConfig'] = (id, c) => updatePiConfig(id, c, user)
         .then(c => setConfigs(cs => replaceFromArray(cs, { ...c, config_json: JSON.parse(c.config_json) })))
         .catch(err => isAuthError(err) ? signout() : handleErr(err));
@@ -91,5 +102,6 @@ export const useProvideConfig = ({ user, signout }: AuthContext): PiConfigContex
         addConfig,
         deleteConfig,
         updateConfig,
+        runConfig,
     };
 }
