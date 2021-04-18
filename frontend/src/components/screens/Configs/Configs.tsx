@@ -39,7 +39,7 @@ const Configs: FC = () => {
                             <>
                                 <Button
                                     className="btn-icon padding"
-                                    onClick={() => window.confirm('Run config?') && runConfig(c.id)}
+                                    onClick={(e) => { e.stopPropagation(); window.confirm('Run config?') && runConfig(c.id) }}
                                 >
                                     <span className="icon">
                                         <PlayIcon />
@@ -55,7 +55,7 @@ const Configs: FC = () => {
                                 </Link>
                                 <Button
                                     className="btn-icon padding"
-                                    onClick={() => window.confirm('Delete Zone?') && deleteConfig(c.id)}
+                                    onClick={(e) => { e.stopPropagation(); window.confirm('Delete Zone?') && deleteConfig(c.id) }}
                                 >
                                     <span className="icon">
                                         <DeleteIcon />
