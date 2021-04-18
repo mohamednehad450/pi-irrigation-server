@@ -1,18 +1,19 @@
 import { FC, useState } from "react"
 import { Button, Header, ListRow } from "../../common"
 import { useConfig } from "../../piConfig"
-
-
-import { ReactComponent as DeleteIcon } from '../../../assets/icons/delete.svg'
-import { ReactComponent as EditIcon } from '../../../assets/icons/edit.svg'
 import { Link } from "react-router-dom"
 import { routes } from "../../../routes"
 import ConfigDetails from "./ConfigDetails"
 
+import { ReactComponent as DeleteIcon } from '../../../assets/icons/delete.svg'
+import { ReactComponent as EditIcon } from '../../../assets/icons/edit.svg'
+import { ReactComponent as PlayIcon } from '../../../assets/icons/play.svg'
+
+
 
 const Configs: FC = () => {
 
-    const { configs, deleteConfig } = useConfig()
+    const { configs, deleteConfig, runConfig } = useConfig()
     const [expandedId, setExpandedId] = useState('')
 
     return (
@@ -36,6 +37,14 @@ const Configs: FC = () => {
                         )}
                         rightItem={(
                             <>
+                                <Button
+                                    className="btn-icon padding"
+                                    onClick={() => window.confirm('Run config?') && runConfig(c.id)}
+                                >
+                                    <span className="icon">
+                                        <PlayIcon />
+                                    </span>
+                                </Button>
                                 <Link
                                     className="btn-icon padding"
                                     to={`${routes.NEW_CONFIG}?edit=${c.id}`}
