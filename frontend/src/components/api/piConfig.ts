@@ -121,3 +121,12 @@ export const removePiConfig = async (id: PiConfig['id'], user?: User): Promise<v
 }
 
 
+export const runConfig = async (id: PiConfig['id'], user?: User): Promise<void> => {
+    await Axios.post<void>(`/api/configs/${id}/run_config/`, {}, {
+        headers: {
+            "Authorization": `JWT ${user?.token}`
+        }
+    })
+}
+
+
