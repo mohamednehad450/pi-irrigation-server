@@ -61,7 +61,7 @@ def start_config(config_json):
 
     validated_config = validate_config(json.loads(config_json), schema)
 
-    logfile = 'log.txt'
+    logfile = settings.IRRIGATION_LOG
     def logger(m): log_with_timestamp(m, logfile)
 
     def run():
