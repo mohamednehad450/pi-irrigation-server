@@ -10,7 +10,8 @@ from rest_framework.decorators import action
 
 from .models import PiConfig
 from .serializers import PiConfigSerializer
-from .pi import start_config, get_status
+from .pi import start_config, get_status, get_sched, update_sched
+from jsonschema import ValidationError as SchemaValidationError
 
 
 def frontend(request):
@@ -83,6 +84,17 @@ class PiConfigViewSet(viewsets.ViewSet):
     @action(detail=False)
     def get_device_status(self, request):
         return Response(get_status())
+
+    @action(detail=False, methods=['post', 'get'])
+    def sched(self, request):
+        if request.method == "POST":
+            try:
+                sched = update_sched(request.data)
+                return Response(sched)
+            except SchemaValidationError as e:
+                return Response({"error": e.message}, status=400)
+        else:
+            return Response(get_sched())
 
     @action(methods=['post'], detail=True)
     def run_config(self, request, pk=None):

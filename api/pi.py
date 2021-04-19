@@ -37,6 +37,26 @@ def cleanup():
 atexit.register(cleanup)
 
 
+def get_sched():
+    s = json.load(open(settings.IRRIGATION_SCHED, 'r'))
+    schema = json.load(open(settings.IRRIGATION_SCHED_SCHEMA, 'r'))
+    return validate_sched(s, schema)
+
+
+def update_sched(sched):
+    schema = json.load(open(settings.IRRIGATION_SCHED_SCHEMA, 'r'))
+    obj = validate_sched(sched, schema)
+    f = open(settings.IRRIGATION_SCHED, 'w')
+    json.dump(obj, f)
+    f.close()
+    return obj
+
+
+def validate_sched(sched, schema):
+    validate(sched, schema)
+    return sched
+
+
 def get_status():
     f = open(settings.IRRIGATION_STATUS, 'r')
     status = json.load(f)

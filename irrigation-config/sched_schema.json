@@ -1,0 +1,49 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "2",
+    "title": "Timer Schedule Config",
+    "description": "An Irrigation system timer schedule configuration",
+    "type": "object",
+    "required": [
+        "daysOfWeek",
+        "hour",
+        "minute",
+        "configId"
+    ],
+    "properties": {
+        "configId": {
+            "title": "Configuration ID",
+            "description": "The unique identifier for the current active config",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "hour": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 24
+        },
+        "minute": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 59
+        },
+        "daysOfWeek": {
+            "description": "Days of the week the timer will run on",
+            "type": "array",
+            "items": {
+                "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6
+                ]
+            },
+            "uniqueItems": true
+        }
+    }
+}
