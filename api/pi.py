@@ -6,15 +6,65 @@ from jsonschema import validate
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.date import DateTrigger, convert_to_datetime, datetime, get_localzone
 
-from datetime import timedelta
+from datetime import timedelta, datetime, timezone
 
 from .utils import iso8601_duration_as_seconds as parse_duration, turn_on, turn_off_with_log, GPIO_Initialize, log_with_timestamp, GPIO_cleanup
 
 from .models import PiConfig
 from django.conf import settings
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
+
+
+def sched_handler():
+    # Getting Time
+    d = datetime.now()
+
+    # Get device status
+    s = get_sched()
+
+    # Get sched fields
+    days = s.get('daysOfWeek')
+    hour = s.get('hour')
+    minute = s.get('minute')
+    config_id = s.get('configId')
+
+    # Checking for the active config
+    if config_id is not None:
+
+        # checking if should run
+        day = d.weekday()
+        h = d.hour
+        m = d.minute
+        if day in days and h == hour and m == minute:
+
+            # Getting config
+            try:
+                config = PiConfig.objects.get(id=config_id)
+
+            # Id is invalid
+            except ValidationError:
+                log_with_timestamp(
+                    f"INVALID CONFIG ID IN SCHEDULE: {config_id}", settings.IRRIGATION_LOG)
+                return
+            # Config doesn't exist
+            except ObjectDoesNotExist:
+                log_with_timestamp(
+                    f"MISSING CONFIG IN SCHEDULE: {config_id}", settings.IRRIGATION_LOG)
+                return
+
+            r = start_config(config.config_json)
+
+            # Fail to run: another config is running
+            if r is not None:
+                running_id = get_status().get('configId')
+                log_with_timestamp(
+                    f"Another config ({running_id}) is already running, Skipping scheduled: {config_id}", settings.IRRIGATION_LOG)
+
 
 sched = BackgroundScheduler()
 sched.start()
+
+sched.add_job(sched_handler, 'interval', minutes=1)
 
 
 def update_status(running, config_id):
