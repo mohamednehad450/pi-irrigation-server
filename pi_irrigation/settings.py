@@ -179,3 +179,4 @@ JWT_AUTH = {
 
 IRRIGATION_DIR = os.path.join(BASE_DIR, 'irrigation-config')
 IRRIGATION_SCHEMA = os.path.join(IRRIGATION_DIR, 'schema.json')
+IRRIGATION_STATUS = os.path.join(IRRIGATION_DIR, 'status.json')

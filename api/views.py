@@ -10,7 +10,7 @@ from rest_framework.decorators import action
 
 from .models import PiConfig
 from .serializers import PiConfigSerializer
-from .pi import start_config
+from .pi import start_config, get_status
 
 
 def frontend(request):
@@ -80,11 +80,17 @@ class PiConfigViewSet(viewsets.ViewSet):
         except ValidationError:
             return Response({"id": [f"'{pk}' is not a valid UUID ID"]}, status=400)
 
+    @action(detail=False)
+    def get_device_status(self, request):
+        return Response(get_status())
+
     @action(methods=['post'], detail=True)
     def run_config(self, request, pk=None):
         try:
             config = get_object_or_404(PiConfig, user=request.user, pk=pk)
-            start_config(config.config_json)
+            r = start_config(config.config_json)
+            if r is not None:
+                return Response(r, status=400)
             return Response(status=200)
         except ValidationError:
             return Response({"id": [f"'{pk}' is not a valid UUID ID"]}, status=400)

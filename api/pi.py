@@ -1,6 +1,6 @@
 import time
 import json
-
+import atexit
 from jsonschema import validate
 
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -8,7 +8,7 @@ from apscheduler.triggers.date import DateTrigger, convert_to_datetime, datetime
 
 from datetime import timedelta
 
-from .utils import iso8601_duration_as_seconds as parse_duration, turn_on, turn_off_with_log, GPIO_Initialize, log_with_timestamp, exit_handler
+from .utils import iso8601_duration_as_seconds as parse_duration, turn_on, turn_off_with_log, GPIO_Initialize, log_with_timestamp, GPIO_cleanup
 
 from .models import PiConfig
 from django.conf import settings
@@ -17,9 +17,47 @@ sched = BackgroundScheduler()
 sched.start()
 
 
+def update_status(running, config_id):
+    f = open(settings.IRRIGATION_STATUS, 'w')
+    json.dump({
+        "running": running,
+        "configId": config_id
+    }, f)
+    f.close()
+
+
+update_status(False, None)
+
+
+def cleanup():
+    GPIO_cleanup()
+    update_status(False, None)
+
+
+atexit.register(cleanup)
+
+
+def get_status():
+    f = open(settings.IRRIGATION_STATUS, 'r')
+    status = json.load(f)
+    f.close()
+    return status
+
+
 def start_config(config_json):
 
-    schema = json.load(open(settings.IRRIGATION_SCHEMA, "r"))
+    status = get_status()
+    running = status.get('running', False)
+    if running:
+        config_id = status.get('configId', '')
+        return {
+            "error": f"Config: {config_id} is running",
+            "status": status
+        }
+
+    f = open(settings.IRRIGATION_SCHEMA, "r")
+    schema = json.load(f)
+    f.close()
 
     validated_config = validate_config(json.loads(config_json), schema)
 
@@ -28,12 +66,15 @@ def start_config(config_json):
 
     def run():
         try:
+            update_status(True, validated_config.get('configId'))
             run_config(validated_config, logger)
-            exit_handler()
+            cleanup()
         except:
-            exit_handler()
+            cleanup()
 
     sched.add_job(run)
+
+    return None
 
 
 def validate_config(config, schema):

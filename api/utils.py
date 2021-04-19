@@ -37,7 +37,7 @@ def turn_off(pin):
     GPIO.output(pin, GPIO.HIGH)
 
 
-def exit_handler():
+def GPIO_cleanup():
     GPIO.cleanup()
 
 
