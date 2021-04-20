@@ -8,12 +8,13 @@ import ConfigDetails from "./ConfigDetails"
 import { ReactComponent as DeleteIcon } from '../../../assets/icons/delete.svg'
 import { ReactComponent as EditIcon } from '../../../assets/icons/edit.svg'
 import { ReactComponent as PlayIcon } from '../../../assets/icons/play.svg'
+import { ReactComponent as EventIcon } from '../../../assets/icons/event.svg'
 
 
 
 const Configs: FC = () => {
 
-    const { configs, deleteConfig, runConfig } = useConfig()
+    const { configs, deleteConfig, runConfig, updateSched, sched } = useConfig()
     const [expandedId, setExpandedId] = useState('')
 
     return (
@@ -38,6 +39,16 @@ const Configs: FC = () => {
                         rightItem={(
                             <>
                                 <Button
+                                    disabled={sched?.configId === c.id}
+                                    className="btn-icon padding"
+                                    onClick={(e) => { e.stopPropagation(); window.confirm('Set as Active config?') && sched && updateSched({ ...sched, configId: c.id }) }}
+                                >
+                                    <span className="icon">
+                                        <EventIcon />
+                                    </span>
+                                </Button>
+                                <Button
+
                                     className="btn-icon padding"
                                     onClick={(e) => { e.stopPropagation(); window.confirm('Run config?') && runConfig(c.id) }}
                                 >
