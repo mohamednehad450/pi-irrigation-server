@@ -8,6 +8,7 @@ import {
     getSched,
     updateSched,
     getStatus,
+    getLog,
 } from './piConfig'
 
 
@@ -38,6 +39,7 @@ export {
     getSched,
     updateSched,
     getStatus,
+    getLog,
 }
 
 export type {

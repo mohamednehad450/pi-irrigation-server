@@ -6,7 +6,8 @@ import SchedInput from "./SchedInput";
 
 
 const Device: FC = () => {
-    const { sched, updateSched, status, configs, updateStatus } = useConfig()
+    const { sched, log, getLog, updateSched, status, configs, updateStatus } = useConfig()
+
 
     useEffect(() => {
         const interval = setInterval(() => updateStatus(), 3000)
@@ -37,8 +38,17 @@ const Device: FC = () => {
                     Schedule
                 </span>
                 <SchedInput sched={sched} onChange={s => updateSched(s)} />
-                <div className="padding-">
-                </div>
+            </div>
+            <Button onClick={() => getLog()}>
+                Get Log
+            </Button>
+            <div className="margin padding border">
+                {log.split('\n').reverse().map(s => (
+                    <>
+                        <p>{s}</p>
+                        <br />
+                    </>
+                ))}
             </div>
         </div>
     )

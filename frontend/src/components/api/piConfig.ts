@@ -172,4 +172,12 @@ export const updateSched = async (sched: Sched, user?: User): Promise<Sched> => 
 }
 
 
+export const getLog = async (user?: User): Promise<string> => {
+    const { data } = await Axios.get<{ "log": string }>(`/api/configs/get_log/`, {
+        headers: {
+            "Authorization": `JWT ${user?.token}`
+        }
+    })
+    return data.log
+}
 

@@ -85,6 +85,13 @@ class PiConfigViewSet(viewsets.ViewSet):
     def get_device_status(self, request):
         return Response(get_status())
 
+    @action(detail=False)
+    def get_log(self, request):
+        f = open(settings.IRRIGATION_LOG, 'r')
+        log = f.read()
+        f.close()
+        return Response({"log": log})
+
     @action(detail=False, methods=['post', 'get'])
     def sched(self, request):
         if request.method == "POST":

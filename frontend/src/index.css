@@ -431,6 +431,10 @@ main {
   margin: 1rem 0;
 }
 
+.margin {
+  margin: 1rem;
+}
+
 @media only screen and (max-width: 799px) {
   .navbar {
     background: var(--bg-nav);

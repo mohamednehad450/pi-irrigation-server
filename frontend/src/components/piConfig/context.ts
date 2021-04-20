@@ -10,6 +10,7 @@ import {
     getSched as getSchedAPI,
     updateSched as updateSchedAPI,
     getStatus as getStatusAPI,
+    getLog as getLogAPI,
 } from '../api'
 
 import type { AuthContext } from '../auth';
@@ -27,6 +28,8 @@ export interface PiConfigContext {
     status?: Status,
     updateSched: (sched: Sched) => Promise<void>,
     sched?: Sched,
+    log: string
+    getLog: () => Promise<void>
 }
 
 const defaultConfigContext: PiConfigContext = {
@@ -37,7 +40,8 @@ const defaultConfigContext: PiConfigContext = {
     runConfig: async () => console.error('auth not initialized'),
     updateSched: async () => console.error('auth not initialized'),
     updateStatus: async () => console.error('auth not initialized'),
-
+    getLog: async () => console.error('auth not initialized'),
+    log: '',
 };
 
 
@@ -86,6 +90,11 @@ export const useProvideConfig = ({ user, signout }: AuthContext): PiConfigContex
     const [sched, setSched] = useState<Sched>()
     const [status, setStatus] = useState<Status>()
 
+    const [log, setLog] = useState('')
+
+    const getLog: PiConfigContext['getLog'] = () => getLogAPI(user)
+        .then(setLog)
+
     const addConfig: PiConfigContext['addConfig'] = (c) => addNewPiConfig(c, user)
         .then(c => setConfigs(cs => [{ id: c.id, config_json: JSON.parse(c.config_json) }, ...cs]))
         .catch(err => isAuthError(err) ? signout() : handleErr(err));
@@ -129,5 +138,7 @@ export const useProvideConfig = ({ user, signout }: AuthContext): PiConfigContex
         status,
         updateSched,
         updateStatus,
+        getLog,
+        log
     };
 }
