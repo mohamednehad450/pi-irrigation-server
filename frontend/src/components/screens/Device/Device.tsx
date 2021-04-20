@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Button, Header, SettingRow } from "../../common";
 import { useConfig } from "../../piConfig";
 import SchedInput from "./SchedInput";
@@ -7,6 +7,12 @@ import SchedInput from "./SchedInput";
 
 const Device: FC = () => {
     const { sched, updateSched, status, configs, updateStatus } = useConfig()
+
+    useEffect(() => {
+        const interval = setInterval(() => updateStatus(), 3000)
+        return () => clearInterval(interval)
+    }, [updateStatus])
+
     return (
         <div className="container">
             <Header
