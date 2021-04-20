@@ -72,3 +72,13 @@ export const formatDuration = (d: Duration): string => {
     const sec = Math.floor(d.as('seconds') % 60)
     return `${min <= 9 ? '0' + min : min}:${sec <= 9 ? '0' + sec : sec}`
 }
+
+export const HTMLMap = <T extends Element, R = any>(col: HTMLCollectionOf<T>, fn: (item: T, i: number) => R): R[] => {
+    let i = 0
+    const arr = []
+    for (const item of col) {
+        arr.push(fn(item, i))
+        i += 1
+    }
+    return arr
+}
