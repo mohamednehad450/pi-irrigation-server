@@ -5,6 +5,9 @@ import {
     validPinsArr,
     updatePiConfig,
     runConfig,
+    getSched,
+    updateSched,
+    getStatus,
 } from './piConfig'
 
 
@@ -20,6 +23,8 @@ import type {
     PumpError,
     ConfigJsonError,
     ParsedPiConfig,
+    Sched,
+    Status,
 } from './piConfig'
 
 
@@ -30,6 +35,9 @@ export {
     validPinsArr,
     updatePiConfig,
     runConfig,
+    getSched,
+    updateSched,
+    getStatus,
 }
 
 export type {
@@ -44,4 +52,6 @@ export type {
     PumpError,
     ConfigJsonError,
     ParsedPiConfig,
+    Sched,
+    Status,
 }

@@ -3,6 +3,18 @@ import { Duration } from "moment";
 import { User } from "../auth"
 
 
+export interface Sched {
+    daysOfWeek: number[]
+    hour: number
+    minute: number
+    configId: string | null
+}
+
+export interface Status {
+    configId: string | null
+    running: boolean
+}
+
 export interface PiConfig {
     id: string
     config_json: string
@@ -128,5 +140,36 @@ export const runConfig = async (id: PiConfig['id'], user?: User): Promise<void> 
         }
     })
 }
+
+
+export const getStatus = async (user?: User): Promise<Status> => {
+    const { data } = await Axios.get<Status>(`/api/configs/get_device_status/`, {
+        headers: {
+            "Authorization": `JWT ${user?.token}`
+        }
+    })
+    return data
+}
+
+
+export const getSched = async (user?: User): Promise<Sched> => {
+    const { data } = await Axios.get<Sched>(`/api/configs/sched/`, {
+        headers: {
+            "Authorization": `JWT ${user?.token}`
+        }
+    })
+    return data
+}
+
+
+export const updateSched = async (sched: Sched, user?: User): Promise<Sched> => {
+    const { data } = await Axios.post<Sched>(`/api/configs/sched/`, { ...sched }, {
+        headers: {
+            "Authorization": `JWT ${user?.token}`
+        }
+    })
+    return data
+}
+
 
 
