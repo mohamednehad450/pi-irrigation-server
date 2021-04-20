@@ -36,4 +36,5 @@ db.sqlite3
 # end Django files
 
 
+.vscode
 
