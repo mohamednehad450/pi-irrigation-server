@@ -182,7 +182,7 @@ def run_zone(zone, logger):
 
     run_pump(pump, logger)
 
-    while len(sched.get_jobs()) > 0:
+    while len(sched.get_jobs()) > 1:
         time.sleep(1)
 
 
