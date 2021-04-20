@@ -6,11 +6,14 @@ import {
     addNewPiConfig,
     removePiConfig,
     updatePiConfig,
-    runConfig as runConfigAPI
+    runConfig as runConfigAPI,
+    getSched as getSchedAPI,
+    updateSched as updateSchedAPI,
+    getStatus as getStatusAPI,
 } from '../api'
 
 import type { AuthContext } from '../auth';
-import { PiConfig, ParsedPiConfig } from "../api";
+import type { PiConfig, ParsedPiConfig, Sched, Status } from "../api";
 
 
 
@@ -20,6 +23,10 @@ export interface PiConfigContext {
     updateConfig: (id: PiConfig['id'], c: Partial<PiConfig>) => Promise<void>
     deleteConfig: (id: PiConfig['id']) => Promise<void>
     runConfig: (id: PiConfig['id']) => Promise<void>
+    updateStatus: () => Promise<void>
+    status?: Status,
+    updateSched: (sched: Sched) => Promise<void>,
+    sched?: Sched,
 }
 
 const defaultConfigContext: PiConfigContext = {
@@ -28,6 +35,9 @@ const defaultConfigContext: PiConfigContext = {
     updateConfig: async () => console.error('auth not initialized'),
     deleteConfig: async () => console.error('auth not initialized'),
     runConfig: async () => console.error('auth not initialized'),
+    updateSched: async () => console.error('auth not initialized'),
+    updateStatus: async () => console.error('auth not initialized'),
+
 };
 
 
@@ -73,6 +83,8 @@ const handleErr = (err: any): any => {
 export const useProvideConfig = ({ user, signout }: AuthContext): PiConfigContext => {
 
     const [configs, setConfigs] = useState<ParsedPiConfig[]>([]);
+    const [sched, setSched] = useState<Sched>()
+    const [status, setStatus] = useState<Status>()
 
     const addConfig: PiConfigContext['addConfig'] = (c) => addNewPiConfig(c, user)
         .then(c => setConfigs(cs => [{ id: c.id, config_json: JSON.parse(c.config_json) }, ...cs]))
@@ -89,11 +101,21 @@ export const useProvideConfig = ({ user, signout }: AuthContext): PiConfigContex
         .then(c => setConfigs(cs => replaceFromArray(cs, { ...c, config_json: JSON.parse(c.config_json) })))
         .catch(err => isAuthError(err) ? signout() : handleErr(err));
 
+    const updateSched: PiConfigContext['updateSched'] = (sched: Sched) => updateSchedAPI(sched, user)
+        .then(setSched)
+
+    const updateStatus: PiConfigContext['updateStatus'] = () => getStatusAPI(user)
+        .then(setStatus)
+
     useEffect(() => {
         user &&
             getPiConfigs(user)
                 .then(cs => setConfigs(cs.map(c => ({ ...c, config_json: JSON.parse(c.config_json) }))))
                 .catch(err => isAuthError(err) ? signout() : handleErr(err));
+        user &&
+            getStatusAPI(user).then(setStatus)
+        user &&
+            getSchedAPI(user).then(setSched)
     }, [user, signout])
 
 
@@ -103,5 +125,9 @@ export const useProvideConfig = ({ user, signout }: AuthContext): PiConfigContex
         deleteConfig,
         updateConfig,
         runConfig,
+        sched,
+        status,
+        updateSched,
+        updateStatus,
     };
 }
